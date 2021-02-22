@@ -40,6 +40,9 @@
                         <li>anything_else: {{Auth::user()->anything_else}}</li>
                     </ul> -->
                     <!-- <hr> -->
+                    @if(count($empals) <= 0)
+                    <div class="alert alert-info">No data found.</div>
+                    @endif
                     @foreach($empals as $empal)
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">

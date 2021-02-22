@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/empal/register');
 });
 Route::get('/empal/register', function () {
     return view('register');
@@ -34,6 +34,7 @@ Route::post('/create-login', 'App\Http\Controllers\UserController@createLogin')-
 Route::get('/empal/{user}/details', 'App\Http\Controllers\UserController@show')->name('empal.details')->middleware('auth');
 Route::post('empal/send-message', 'App\Http\Controllers\UserController@sendMessage')->name('empal.send-message')->middleware('auth');
 Route::get('/messages', 'App\Http\Controllers\UserController@getMessages')->name('messages')->middleware('auth');
+Route::get('/empals/list', 'App\Http\Controllers\UserController@getEmpals')->name('empals.list');
 
 Auth::routes();
 

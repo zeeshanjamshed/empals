@@ -42,7 +42,8 @@ class CreateUsersTable extends Migration
             $table->string('fav_movies')->nullable();
             $table->string('fav_music')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->boolean('approved')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

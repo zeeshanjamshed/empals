@@ -44,7 +44,7 @@ class UserController extends Controller
         $user->empal_other_preferences = $request->empal_other_preferences;
         $user->anything_else = $request->anything_else;
         $user->email_verified_at = $request->email_verified_at;
-        $user->password = bcrypt('password');
+        // $user->password = bcrypt('password');
         $user->save();
         return redirect()->back()->with([
             'message' => 'Registerd successfully, you will recieve email after approval.'
@@ -53,6 +53,8 @@ class UserController extends Controller
     public function approve(User $user)
     {
         $token = sha1(mt_rand(1, 90000) . 'token');
+        $user->approved = true;
+        $user->save();
         $rec = DB::table('invitation_tokens')->where('email', $user->email)->first();
         if (empty($rec))
             DB::table('invitation_tokens')->insert([
@@ -66,12 +68,12 @@ class UserController extends Controller
                 // here comes what you want
                 ->setBody('<p>Click <a href="http://127.0.0.1:8000/create-login?token=' . $token . '">here</a> to generate login credentials.</p>', 'text/html'); // for HTML rich messages
         });
-        return [
-            'message' => 'Approved successsfully.'
-        ];
-        // return redirect()->back()->with([
+        // return [
         //     'message' => 'Approved successsfully.'
-        // ]);
+        // ];
+        return redirect()->back()->with([
+            'message' => 'Approved successsfully.'
+        ]);
     }
     public function createLogin(Request $request)
     {
@@ -138,5 +140,10 @@ class UserController extends Controller
     {
         $messages = Message::where('user_id', Auth::user()->id)->get();
         return view('messages', compact('messages'));
+    }
+    public function getEmpals()
+    {
+        $users = User::all();
+        return view('users-list', compact('users'));
     }
 }
